@@ -308,11 +308,22 @@
         <li><a href="#144-manytomany-jointable">1.4.4 @ManyToMany/ @JoinTable</a></li>
       </ol>
     </li>
-    <li><a href="#15-inheritence的写法">1.5 Inheritence的写法</a></li>
+    <li><a href="#15-inheritence的写法">1.5 Inheritence的写法</a>
+      <ol>
+        <li><a href="#151-mappedsuperclass">1.5.1 @MappedSuperclass</a></li>
+        <li><a href="#152-inheritancediscriminatorcolumndiscriminatorvalue">1.5.2 @Inheritance/@DiscriminatorColumn/@DiscriminatorValue</a></li>
+      </ol>
+    </li>
   </ol>
 
   <ol>
     <li><a href="#21-repository">2.1 Repository</a></li>
+    <li><a href="#22-derived-query-methods派生查询方法">2.2 Derived Query Methods(派生查询方法)</a></li>
+    <li><a href="#23-custom-queries">2.3 Custom Queries</a>
+      <ol>
+        <li><a href="#231-query和param">2.3.1 @Query和@Param</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -369,7 +380,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 8 分钟
+                    阅读时长: 13 分钟
                 </time>
             </div>
         
@@ -884,7 +895,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Id</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@ManyToMany</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JoinTable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;student_course&#34;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="n">joinColumns</span><span class="o">=</span><span class="nd">@JoinColumn</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;student_id&#34;</span><span class="p">),</span><span class="w">
@@ -897,7 +908,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Id</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@ManyToMany</span><span class="p">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&#34;courses&#34;</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Course</span><span class="o">&gt;</span><span class="w"> </span><span class="n">courses</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
@@ -919,7 +930,210 @@
 <p><mark>（有疑问：命名是否有规则）</mark></p>
 <p><strong>通过以上的代码注解，可以实现多对多关系的映射</strong></p>
 <h2 id="15-inheritence的写法">1.5 Inheritence的写法
-</h2><h1 id="2springboot-jpa">2.SpringBoot JPA
+</h2><p><strong>在数据库设计中,我们知道一个实体可能继承自另一个实体,这种继承关系也需要在JPA中被映射.而在数据库设计中,我们知道要将这种继承关系转化为表的关系有三种方式: Single Table,Class Table以及Concrete Table.</strong></p>
+<p><strong>而在Java程序中,我们知道父类和子类,有时候父类并不提供具体的属性和方法,而是作为一个抽象类存在,如:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Shape</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">color</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">area</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Circle</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">radius</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">area</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">PI</span><span class="o">*</span><span class="n">radius</span><span class="o">*</span><span class="n">radius</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>这时,我们在对应的数据库设计中需要设计一个表来对应Shape吗?Shape实体压根不存储具体的值啊,具体的值都被Shape的子类给实现,因此,在设计数据表时,Shape实体在数据库中不存在对应的表.</strong></p>
+<p><strong>那么问题来了,我们该如何让JPA知道Shape实体不存在对应的表,但Shape的属性又被子类继承呢.于是引出@MappedSuperclass的注解.</strong></p>
+<h3 id="151-mappedsuperclass">1.5.1 @MappedSuperclass
+</h3><p><strong>首先,@MappedSuperclass是JPA中对于基类的注解,但本身并不会映射到数据库表里面,<mark>该注解的主要作用是允许子类继承父类中的被映射为数据库表字段的字段以及JPA注解,避免重复的代码</mark></strong></p>
+<p><strong>最为重要的,@MappedSuperclass并不会生成表,也就是说,我们在数据库设计时,并不需要专门设计一个表来对应父类,但@MappedSuperclass中的映射字段会被子类继承,<mark>还有一点需要注意的是,被@MappedSuperclass注解的类不能够通过JPQL来查询.</mark></strong></p>
+<p><strong>例子:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@MappedSuperclass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Shape</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@GenerateValue</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">GenerationType</span><span class="p">.</span><span class="na">IDENTITY</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">color</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">area</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Entity</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Circle</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">radius</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">area</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">PI</span><span class="o">*</span><span class="n">radius</span><span class="o">*</span><span class="n">radius</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>对应的数据库设计为:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">Circle</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">auto_increment</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">color</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">radius</span><span class="w"> </span><span class="n">double</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>不难发现,实际的数据表中并没有Shape表,但Circle表中却出现了Shape类中的属性.</strong></p>
+<hr>
+<p><strong>虽然但是,有抽象类继承,也有真正的实体类继承呀,有可能父类和子类都需要在数据库中有对应的表,这种情况下,我们的JPA应该怎么去写呢,接下来介绍的注解即解决这个问题</strong></p>
+<h3 id="152-inheritancediscriminatorcolumndiscriminatorvalue">1.5.2 @Inheritance/@DiscriminatorColumn/@DiscriminatorValue
+</h3><p><strong>我们知道数据库设计继承关系时,有单表继承的设计(Single Table),即将父类和子类的属性放在一个表里面,通过定义一个不同的Type来进行区分,比如:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">person</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">auto_increment</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">person_type</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">cap</span><span class="w"> </span><span class="n">double</span><span class="p">,</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">student的字段</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">subject</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">teacher的字段</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>对于单表继承,JPA中对应的写法如下:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Entity</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Inheritance</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">InheritanceType</span><span class="p">.</span><span class="na">SINGLE_TABLE</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@DiscriminatorColumn</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;person_type&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Person</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@GenerateValue</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">GenerationType</span><span class="p">.</span><span class="na">IDENTITY</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Entity</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@DiscriminatorValue</span><span class="p">(</span><span class="s">&#34;student&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Student</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Person</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">cap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Entity</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@DiscriminatorValue</span><span class="p">(</span><span class="s">&#34;teacher&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Teacher</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Person</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">subject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>@Inheritance用于指定实体类继承关系的存储策略</strong></p>
+<ul>
+<li>
+<p><strong>InheritanceType.SINGLE_TABLE:单表继承策略,即所有的父类和子类的数据存储在一个数据表当中</strong></p>
+</li>
+<li>
+<p><strong>InheritanceType.JOINED:类表继承,每个父类和子类都创建一个表,父类和子类的表通过外键连接</strong></p>
+</li>
+<li>
+<p><strong>InheritanceType.TABLE_PER_CLASS:确定表继承,即只为子类创建独立的表,而每个子类的表当中存储父类和子类的字段</strong></p>
+</li>
+</ul>
+<p><strong>@DiscriminatorColumn用于指定区分列,如同我们上面代码定义的&quot;person_type&quot;,通过这个注解,我们知道继承的表中,区分列是谁</strong></p>
+<p><strong>@DiscriminatorValue用于指定子类在区分列中的值,比如Student类在表中对应的值就是student,Teacher类在表中对应的值就是teacher,@DiscriminatorValue一般和@DiscriminatorColumn连用,表示该类在表的区分列中的对应值是什么.</strong></p>
+<h1 id="2springboot-jpa">2.SpringBoot JPA
 </h1><p><strong>这部分将介绍一些SpringBoot框架中使用JPA的代码编写</strong></p>
 <h2 id="21-repository">2.1 Repository
 </h2><p><strong>Repository接口是SpringBoot框架提供的管理数据库的接口，在SpringBoot中的定义如下：</strong></p>
@@ -932,7 +1146,169 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>其中，Class表示要操作的类，ID表示要操作类的ID的类型（Integer,String等等）</strong></p>
-<p>//ToDo</p>
+<p><strong>除此之外,SpringBoot里面还提供其它的Repository接口,列表如下</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">名字</th>
+          <th style="text-align: left">作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Repository&lt;T,ID&gt;</td>
+          <td style="text-align: left">所有Spring Data Repository接口的顶级父接口,没有任何方法</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">CrudRepository&lt;T,ID&gt;</td>
+          <td style="text-align: left">继承自Repository接口,提供了增删改查(CRUD)的操作</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">PagingAndSortingRepository&lt;T,ID&gt;</td>
+          <td style="text-align: left">继承了CrudRepository接口,除了增删改查之外,还提供分页和排序的功能</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">JpaRepository</td>
+          <td style="text-align: left">继承了PagingAndSortingRepository接口,提供了JPA特定的操作方法</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>以上是Spring Boot框架中常见的几种Repository库,方便使用</strong></p>
+<p><strong>此外,在编码时,Spring Boot的JPA编码和JPA一致,需要注意的是结构问题</strong></p>
+<p><strong>在编程时,我们一般区分实体类(实体层)和接口类(数据访问层),一般来说,一个实体对应一个数据访问接口,接口和实体放在不同的包,以workshop来看,项目中的结构如下:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">src/main/java
+</span></span><span class="line"><span class="cl">├── sg.nus.iss.jpa.getstarted.workshop
+</span></span><span class="line"><span class="cl">│   └── SpringJpaGetstartedWorkshopApplication.java
+</span></span><span class="line"><span class="cl">├── sg.nus.iss.jpa.getstarted.workshop.model.domain
+</span></span><span class="line"><span class="cl">│   ├── Address.java
+</span></span><span class="line"><span class="cl">│   ├── Course.java
+</span></span><span class="line"><span class="cl">│   ├── Customer.java
+</span></span><span class="line"><span class="cl">│   ├── Department.java
+</span></span><span class="line"><span class="cl">│   └── Student.java
+</span></span><span class="line"><span class="cl">└── sg.nus.iss.jpa.getstarted.workshop.model.repository
+</span></span><span class="line"><span class="cl">    ├── AddressRepository.java
+</span></span><span class="line"><span class="cl">    ├── CourseRepository.java
+</span></span><span class="line"><span class="cl">    ├── CustomerRepository.java
+</span></span><span class="line"><span class="cl">    ├── DepartmentRepository.java
+</span></span><span class="line"><span class="cl">    └── StudentRepository.java
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>可以看出,实体类存放在domainn包下,而所有的访问接口都存放在repository包下,之后深入了解SpringBoot后,会对项目的架构有更深入的了解</strong></p>
+<h2 id="22-derived-query-methods派生查询方法">2.2 Derived Query Methods(派生查询方法)
+</h2><p><strong>Spring Data JPA所提供的一种允许通过解析方法名,自动生成查询语句而无需编写JPQL或者SQL语句的功能.</strong></p>
+<p><strong>一般来说,派生查询方法的方法命名遵循以下格式:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">findBy+属性名+查询条件
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>其中属性名和查询条件不能省略,下面给出几个例子</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">查询条件</th>
+          <th style="text-align: left">例子</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">And</td>
+          <td style="text-align: left">findByLastnameAndFIrstname</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Or</td>
+          <td style="text-align: left">findByLastnameOrFirstname</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Is,Equals</td>
+          <td style="text-align: left">findByFirstnameIs/findByFirstnameEquals</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Between</td>
+          <td style="text-align: left">findByStartDateBetween</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LessThan</td>
+          <td style="text-align: left">findByAgeLessThan</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LessThanEqual</td>
+          <td style="text-align: left">findByAgeLessThanEqual</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">GreaterThan</td>
+          <td style="text-align: left">findByAgeGreaterThan</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">GreaterThanEqual</td>
+          <td style="text-align: left">findByAgeGreaterThanEqual</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">OrderBy</td>
+          <td style="text-align: left">findByOrderByLastnameDesc</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="23-custom-queries">2.3 Custom Queries
+</h2><p><strong>除了Spring Data JPA提供的派生语法,我们也可以自己编写方法来实现查询</strong></p>
+<h3 id="231-query和param">2.3.1 @Query和@Param
+</h3><p><strong>这个注解用于写SQL或者JPQL查询语句,表明在调用该方法时,执行的查询语句是什么,比如</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Query</span><span class="p">(</span><span class="s">&#34;select c from Course c&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Course</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findAllCourse</span><span class="p">();</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>这样,我们调用findAllCourse方法时,就会执行对应的Query语句了</strong></p>
+<p><strong>当然,我们还希望某些方法能够接受参数,改变查询语句的条件,这时候,我们就要用到@Param注解了,它提供映射参数的功能,能将我们传入的参数对应到Query语句中</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Query</span><span class="p">(</span><span class="s">&#34;select c from Course c where c.name= :name&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Course</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findCourseByName</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>这样一来,我们传入的name参数,就通过@Param注解,替换了@Query语句中的:name,如我们传入Math,语句就会变为</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">select c from Course c where c.name = &#39;Math&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>以上则是Spring Boot中的JPA使用,其它的JPQL知识待笔者整理</strong></p>
 
 </section>
 
