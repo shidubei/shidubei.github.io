@@ -342,6 +342,21 @@
     </li>
     <li><a href="#34-thymeleaf在controller中的使用">3.4 Thymeleaf在Controller中的使用</a></li>
   </ol>
+
+  <ol>
+    <li><a href="#41-session在http中的使用">4.1 Session在HTTP中的使用</a>
+      <ol>
+        <li><a href="#411-session-包含">4.1.1 Session 包含</a></li>
+      </ol>
+    </li>
+    <li><a href="#42-spring-session">4.2 Spring Session</a>
+      <ol>
+        <li><a href="#421-httpsession">4.2.1 HttpSession</a></li>
+        <li><a href="#422-httpservletrequest">4.2.2 HttpServletRequest</a></li>
+        <li><a href="#423">4.2.3</a></li>
+      </ol>
+    </li>
+  </ol>
 </nav>
         </div>
     </section>
@@ -397,7 +412,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 18 分钟
+                    阅读时长: 19 分钟
                 </time>
             </div>
         
@@ -1167,26 +1182,26 @@
 <div class="table-wrapper"><table>
   <thead>
       <tr>
-          <th style="text-align: left">名字</th>
-          <th style="text-align: left">作用</th>
+          <th>名字</th>
+          <th>作用</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">Repository&lt;T,ID&gt;</td>
-          <td style="text-align: left">所有Spring Data Repository接口的顶级父接口,没有任何方法</td>
+          <td>Repository&lt;T,ID&gt;</td>
+          <td>所有Spring Data Repository接口的顶级父接口,没有任何方法</td>
       </tr>
       <tr>
-          <td style="text-align: left">CrudRepository&lt;T,ID&gt;</td>
-          <td style="text-align: left">继承自Repository接口,提供了增删改查(CRUD)的操作</td>
+          <td>CrudRepository&lt;T,ID&gt;</td>
+          <td>继承自Repository接口,提供了增删改查(CRUD)的操作</td>
       </tr>
       <tr>
-          <td style="text-align: left">PagingAndSortingRepository&lt;T,ID&gt;</td>
-          <td style="text-align: left">继承了CrudRepository接口,除了增删改查之外,还提供分页和排序的功能</td>
+          <td>PagingAndSortingRepository&lt;T,ID&gt;</td>
+          <td>继承了CrudRepository接口,除了增删改查之外,还提供分页和排序的功能</td>
       </tr>
       <tr>
-          <td style="text-align: left">JpaRepository</td>
-          <td style="text-align: left">继承了PagingAndSortingRepository接口,提供了JPA特定的操作方法</td>
+          <td>JpaRepository</td>
+          <td>继承了PagingAndSortingRepository接口,提供了JPA特定的操作方法</td>
       </tr>
   </tbody>
 </table></div>
@@ -1245,46 +1260,46 @@
 <div class="table-wrapper"><table>
   <thead>
       <tr>
-          <th style="text-align: left">查询条件</th>
-          <th style="text-align: left">例子</th>
+          <th>查询条件</th>
+          <th>例子</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">And</td>
-          <td style="text-align: left">findByLastnameAndFIrstname</td>
+          <td>And</td>
+          <td>findByLastnameAndFIrstname</td>
       </tr>
       <tr>
-          <td style="text-align: left">Or</td>
-          <td style="text-align: left">findByLastnameOrFirstname</td>
+          <td>Or</td>
+          <td>findByLastnameOrFirstname</td>
       </tr>
       <tr>
-          <td style="text-align: left">Is,Equals</td>
-          <td style="text-align: left">findByFirstnameIs/findByFirstnameEquals</td>
+          <td>Is,Equals</td>
+          <td>findByFirstnameIs/findByFirstnameEquals</td>
       </tr>
       <tr>
-          <td style="text-align: left">Between</td>
-          <td style="text-align: left">findByStartDateBetween</td>
+          <td>Between</td>
+          <td>findByStartDateBetween</td>
       </tr>
       <tr>
-          <td style="text-align: left">LessThan</td>
-          <td style="text-align: left">findByAgeLessThan</td>
+          <td>LessThan</td>
+          <td>findByAgeLessThan</td>
       </tr>
       <tr>
-          <td style="text-align: left">LessThanEqual</td>
-          <td style="text-align: left">findByAgeLessThanEqual</td>
+          <td>LessThanEqual</td>
+          <td>findByAgeLessThanEqual</td>
       </tr>
       <tr>
-          <td style="text-align: left">GreaterThan</td>
-          <td style="text-align: left">findByAgeGreaterThan</td>
+          <td>GreaterThan</td>
+          <td>findByAgeGreaterThan</td>
       </tr>
       <tr>
-          <td style="text-align: left">GreaterThanEqual</td>
-          <td style="text-align: left">findByAgeGreaterThanEqual</td>
+          <td>GreaterThanEqual</td>
+          <td>findByAgeGreaterThanEqual</td>
       </tr>
       <tr>
-          <td style="text-align: left">OrderBy</td>
-          <td style="text-align: left">findByOrderByLastnameDesc</td>
+          <td>OrderBy</td>
+          <td>findByOrderByLastnameDesc</td>
       </tr>
   </tbody>
 </table></div>
@@ -1580,7 +1595,57 @@
 </div>
 </div><p><strong>关于Thymeleaf的语法相关知识，在这里不做赘述，放上连接查看Thymeleaf语法知识</strong></p>
 <p><a class="link" href="" >Thymeleaf语法知识链接</a></p>
-
+<h1 id="4sping-boot-session">4.Sping Boot Session
+</h1><p><strong>首先明确什么是Session,我们知道,在进行HTTP请求后,HTTP请求会返回给我们请求相应的数据,但是,每一次我们进行请求,HTTP返回的都是新页面,并没有对我们上一次的请求进行相应的保存,这也是HTTP协议被叫做无状态协议的由来,无状态即不存储会话状态.</strong></p>
+<p><strong>Session机制就是帮助解决这一问题的机制.它在用户和服务器之间维护状态,允许服务器在多个请求之间保存用户的状态信息.Session机制主要用于Web应用程序中,以便在不同的HTTP请求中保持用户信息和会话状态.</strong></p>
+<h2 id="41-session在http中的使用">4.1 Session在HTTP中的使用
+</h2><p><strong>在HTTP中,我们通常以一个Session ID来对用户进行唯一标识,表示当前用户的会话.</strong></p>
+<p><strong>一般的情况如下:</strong></p>
+<p><strong>1.服务器端:</strong></p>
+<ul>
+<li>
+<p><strong>在用户第一次请求之后,为当前的会话创建一个SessionID,用于标记当前用户的会话,并保存这个会话,之后用户的请求会携带这个会话进行请求</strong></p>
+</li>
+<li>
+<p><strong>在用户携带Session ID进行访问的时候,服务器识别SessionID并返回之前用户访问过的内容</strong></p>
+</li>
+</ul>
+<p><strong>2.客户端:</strong></p>
+<ul>
+<li><strong>客户端在接受了SessinID之后, 每一次请求都会带着SessionID进行请求</strong></li>
+</ul>
+<h3 id="411-session-包含">4.1.1 Session 包含
+</h3><p><strong>在一个Session(会话)中,通常包含这些内容:</strong></p>
+<ul>
+<li>
+<p><strong>Session ID: 唯一的标识,用户第一次访问应用的时候,服务器为用户创建一个会话,并生成唯一的Session ID.会在客户端和服务端之间传递</strong></p>
+</li>
+<li>
+<p><strong>Session Data: 一些状态信息,可能是用户是否登录,用户购物车商品等等</strong></p>
+</li>
+</ul>
+<h2 id="42-spring-session">4.2 Spring Session
+</h2><p><strong>在Spring框架中存在Session库可以帮我们管理Session</strong></p>
+<p><strong>首先我们需要在pom.xml文档中增加Session依赖</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;groupId&gt;</span>org.springframework.session<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&lt;artifactId&gt;</span>spring-session-core<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>添加完依赖之后,所有的HTTP请求都会有会话管理</strong></p>
+<h3 id="421-httpsession">4.2.1 HttpSession
+</h3><h3 id="422-httpservletrequest">4.2.2 HttpServletRequest
+</h3><h3 id="423">4.2.3
+</h3>
 </section>
 
 
