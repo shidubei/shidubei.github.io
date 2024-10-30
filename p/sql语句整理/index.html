@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SQL语句整理&amp;试题分析 1.Select 在SQL语句中,想要查询数据库中的信息,必须要有的关键字就是Select,其基础的语句结构如下:\n1 2 3 Select {[All,Distinct]} [column.../*] From (table,...) {Where (search condition)} {And/Or (search condition)} Group By(column...) Having(column..) Order By(column...) 下面是针对Select 语句形式的一一解释\n">
+<title>SQL语句整理</title>
+
+<link rel='canonical' href='https://shidubei.github.io/p/sql%E8%AF%AD%E5%8F%A5%E6%95%B4%E7%90%86/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="SQL语句整理">
+<meta property='og:description' content="SQL语句整理&amp;试题分析 1.Select 在SQL语句中,想要查询数据库中的信息,必须要有的关键字就是Select,其基础的语句结构如下:\n1 2 3 Select {[All,Distinct]} [column.../*] From (table,...) {Where (search condition)} {And/Or (search condition)} Group By(column...) Having(column..) Order By(column...) 下面是针对Select 语句形式的一一解释\n">
+<meta property='og:url' content='https://shidubei.github.io/p/sql%E8%AF%AD%E5%8F%A5%E6%95%B4%E7%90%86/'>
+<meta property='og:site_name' content='十渡的个人博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-10-30T11:00:11&#43;08:00'/><meta property='article:modified_time' content='2024-10-30T11:00:11&#43;08:00'/>
+<meta name="twitter:title" content="SQL语句整理">
+<meta name="twitter:description" content="SQL语句整理&amp;试题分析 1.Select 在SQL语句中,想要查询数据库中的信息,必须要有的关键字就是Select,其基础的语句结构如下:\n1 2 3 Select {[All,Distinct]} [column.../*] From (table,...) {Where (search condition)} {And/Or (search condition)} Group By(column...) Having(column..) Order By(column...) 下面是针对Select 语句形式的一一解释\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu12519528904215590063.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">十渡的个人博客</a></h1>
+            <h2 class="site-description">Welcome to my world</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ShiDuBei'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://shidubei.github.io/en/" >English</option>
+                                
+                                    <option value="https://shidubei.github.io/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1select">1.Select</a>
+      <ol>
+        <li><a href="#11-select--distinct-from-table">1.1 Select */ Distinct From table</a></li>
+        <li><a href="#12-select-条件-where-not">1.2 Select 条件 Where [Not]</a>
+          <ol>
+            <li><a href="#121-select-条件-andorbetweenlikein">1.2.1 Select 条件 And/Or/Between/Like/In</a></li>
+          </ol>
+        </li>
+        <li><a href="#13-select-别名-as">1.3 Select 别名 AS</a></li>
+        <li><a href="#14-select-嵌套查询子查询-sub-query">1.4 Select 嵌套查询(子查询) Sub Query</a>
+          <ol>
+            <li><a href="#141-同表子查询">1.4.1 同表子查询</a></li>
+            <li><a href="#142-跨表子查询">1.4.2 跨表子查询</a></li>
+          </ol>
+        </li>
+        <li><a href="#15-select-空-null">1.5 Select 空 Null</a></li>
+        <li><a href="#16-select-排序-order-by-desc">1.6 Select 排序 Order By [DESC]</a></li>
+        <li><a href="#17-select-计数-count">1.7 Select 计数 Count</a></li>
+        <li><a href="#18-select-平均值-avg">1.8 Select 平均值 AVG</a></li>
+        <li><a href="#19-select-总和-sum">1.9 Select 总和 SUM</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-join">2. Join</a>
+      <ol>
+        <li><a href="#21-inner-join">2.1 Inner Join</a></li>
+        <li><a href="#22-left-join">2.2 Left Join</a></li>
+        <li><a href="#23-self-join">2.3 Self Join</a></li>
+      </ol>
+    </li>
+    <li><a href="#3-where-having-on的区别">3. Where/ Having/ On的区别</a></li>
+    <li><a href="#3-union">3. Union</a></li>
+    <li><a href="#4-limit">4. Limit</a></li>
+    <li><a href="#5-sql语句限制">5. SQL语句限制</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/sql%E8%AF%AD%E5%8F%A5%E6%95%B4%E7%90%86/">SQL语句整理</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-10-30</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="sql语句整理试题分析">SQL语句整理&amp;试题分析
+</h1><h2 id="1select">1.Select
+</h2><p><strong>在SQL语句中,想要查询数据库中的信息,必须要有的关键字就是Select,其基础的语句结构如下:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">Select</span><span class="w"> </span><span class="err">{</span><span class="p">[</span><span class="k">All</span><span class="p">,</span><span class="k">Distinct</span><span class="p">]</span><span class="err">}</span><span class="w"> </span><span class="p">[</span><span class="k">column</span><span class="p">...</span><span class="cm">/*] From (table,...) {Where (search
+</span></span></span><span class="line"><span class="cl"><span class="cm">condition)} {And/Or (search condition)} Group By(column...) 
+</span></span></span><span class="line"><span class="cl"><span class="cm">Having(column..) Order By(column...)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>下面是针对Select 语句形式的一一解释</strong></p>
+<h3 id="11-select--distinct-from-table">1.1 Select */ Distinct From table
+</h3><p><strong>Select * from customer: 表示列出customer表中的所有列和所有信息,并没有对表中数据做筛选</strong></p>
+<p><strong>Select id,name from customer: 表示列出customer表中的Id和name列,其余列不做显示</strong></p>
+<p><strong>Select Distinct race from customer: 表示列出customer表,race列中 没有重复的元素, Distinct关键字表示截然不同,独立的值</strong></p>
+<h3 id="12-select-条件-where-not">1.2 Select 条件 Where [Not]
+</h3><p><strong>Where关键字通常用于Select 筛选需要条件的时候,也经常和其它关键字连用</strong></p>
+<p><strong>Select * from customer where race = &lsquo;CN&rsquo; 表示筛选customer表中所有满足race=&lsquo;CN&rsquo;条件的数据</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Race</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>01</td>
+          <td>John</td>
+          <td>CN</td>
+      </tr>
+      <tr>
+          <td>02</td>
+          <td>Tom</td>
+          <td>CN</td>
+      </tr>
+      <tr>
+          <td>03</td>
+          <td>Jack</td>
+          <td>SG</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>筛选之后为:</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Race</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>01</td>
+          <td>John</td>
+          <td>CN</td>
+      </tr>
+      <tr>
+          <td>02</td>
+          <td>Tom</td>
+          <td>CN</td>
+      </tr>
+  </tbody>
+</table></div>
+<p><strong>Select * from customer where not (race=&lsquo;CN&rsquo;)同样的,加上Not 关键字自后,筛选的结果就会除去所有满足条件的数据</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Race</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>03</td>
+          <td>Jack</td>
+          <td>SG</td>
+      </tr>
+  </tbody>
+</table></div>
+<h4 id="121-select-条件-andorbetweenlikein">1.2.1 Select 条件 And/Or/Between/Like/In
+</h4><p><strong>Select * from customer where race =&lsquo;CN&rsquo; and age&gt;=21</strong></p>
+<p><strong>And关键字通常用于设置筛选条件,筛选必须同时满足and前面条件和后面条件的数据</strong></p>
+<p><strong>Select * from customer where race= &lsquo;CN&rsquo; or age&gt;=21</strong></p>
+<p><strong>Or关键字通常用于设置筛选条件,筛选满足or前后之一条件的数据,即满足race=&lsquo;CN&rsquo; 或者 age&gt;=21(包括既满足race=&lsquo;CN&rsquo;和age&gt;=21的数据)</strong></p>
+<p><strong>Select * from customer where age between 20 and 23</strong></p>
+<p><strong>Between关键字通常用于设置筛选条件,筛选出满足范围条件的数据</strong></p>
+<p><strong>Select * from customer where name like &lsquo;J%&rsquo;</strong></p>
+<p><strong>Like关键字通常用于模糊匹配,筛选出所有满足类似条件的数据. %表示替代字符.这里的&rsquo;J%&lsquo;表示所有以J开头的字符串</strong></p>
+<p><strong>Select * from customer where name like &lsquo;%J%&rsquo;</strong></p>
+<p><strong>&rsquo;%J%&lsquo;则表示包含J字符的数据</strong></p>
+<p><strong>Select * from customer where race in (&lsquo;CN&rsquo;,&lsquo;SG&rsquo;)</strong></p>
+<p><strong>In 关键字也表示范围条件,但范围通常是In括号中的值,对于字符串筛选可以用In,筛选所有满足In范围的数据</strong></p>
+<h3 id="13-select-别名-as">1.3 Select 别名 AS
+</h3><p><strong>除了对数据进行条件筛选,我们也可以通过别名机制设置我们想显示的信息</strong></p>
+<p><strong>Select id AS CustomerID,name from customer. 将id这一列别名为CustomerID,那么我们的显示就会是</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>CustomerID</th>
+          <th>Name</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>01</td>
+          <td>John</td>
+      </tr>
+      <tr>
+          <td>02</td>
+          <td>Tom</td>
+      </tr>
+      <tr>
+          <td>03</td>
+          <td>Jack</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="14-select-嵌套查询子查询-sub-query">1.4 Select 嵌套查询(子查询) Sub Query
+</h3><p><strong>在SQL中,以一个表的查询结果作为一个表(这个表可以是另一个表,也可以是当前表)的查询条件,我们叫做子查询/嵌套查询.和外表类似而不同的是,Sub Query只用在两个表的情况</strong></p>
+<h4 id="141-同表子查询">1.4.1 同表子查询
+</h4><p><strong>Select employee_name from employees where salary &gt; (select salary from employees where emplyee_name =&lsquo;zhongyi&rsquo;)</strong></p>
+<p><strong>上述语句的作用就是筛选所有工资大于&rsquo;zhongyi&rsquo;的employee,这就是同表的嵌套查询</strong></p>
+<h4 id="142-跨表子查询">1.4.2 跨表子查询
+</h4><p><strong>除此之外,子查询除了返回一条数据外,也可以返回多行数据,通常与In关键字连用.子查询也可以跨表使用</strong></p>
+<p><strong>Select employee_name from employees where department_id in (select depaertment_id from departments where location = &lsquo;CN&rsquo;)</strong></p>
+<p><strong>这里就表示查询所有employees中的department_id和departments表中department_id条件相符合的数据.和外键查询类似</strong></p>
+<h3 id="15-select-空-null">1.5 Select 空 Null
+</h3><p><strong>对于数据库查询,我们的数据中有时候会出现空值,当我们要去查询这些空值条件时,就要用Null关键字</strong></p>
+<p><strong>Select * from customer where email is Null</strong></p>
+<h3 id="16-select-排序-order-by-desc">1.6 Select 排序 Order By [DESC]
+</h3><h3 id="17-select-计数-count">1.7 Select 计数 Count
+</h3><p><strong>Count 关键字会计算筛选条件返回后的数据的行数,注意是计算数据的行数</strong></p>
+<p><strong>Count(<code>*</code>)计算所有行</strong></p>
+<p><strong>Count(column)计算当前列中不为null的所有行数</strong></p>
+<p><strong>Count(Distinct column) 计算当前列中唯一且不为空的行数</strong></p>
+<h3 id="18-select-平均值-avg">1.8 Select 平均值 AVG
+</h3><p><strong>AVG关键字会计算所选列的平均值,会自动忽略null值,如果所有值都是null,则返回null</strong></p>
+<h3 id="19-select-总和-sum">1.9 Select 总和 SUM
+</h3><p><strong>SUM关键字会计算所选列的综合,将一列中的非null值相加,需要注意的是,当SUM关键字作为结果显示,同样作为结果显示的列需要搭配order by使用</strong></p>
+<h2 id="2-join">2. Join
+</h2><h3 id="21-inner-join">2.1 Inner Join
+</h3><h3 id="22-left-join">2.2 Left Join
+</h3><h3 id="23-self-join">2.3 Self Join
+</h3><h2 id="3-where-having-on的区别">3. Where/ Having/ On的区别
+</h2><p><strong>Where通常是在行数据被查询之前进行条件过滤,在使用聚合函数(Count,AVG,SUM)的时候不能使用Where</strong></p>
+<p><strong>Having用于过滤分组后的数据,通常和Group By一起使用,对聚合的结果进行筛选,其过滤过程是在查询后的,可以和聚合函数(Count,AVG,SUM)一起使用</strong></p>
+<p><strong>On通常在连接表时指定连接条件,在Inner Join 的时候可以被Where 替代, 但在外连接时候不能被替代</strong></p>
+<h2 id="3-union">3. Union
+</h2><h2 id="4-limit">4. Limit
+</h2><h2 id="5-sql语句限制">5. SQL语句限制
+</h2><p><strong>对于SQL语句,我们什么时候用Where,什么时候用On,什么时候用Having,Group By等等,好像都没有一个明确的概念.因此,这一小节主要讲解SQL语句的工作原理以及部分关键字的使用限制.</strong></p>
+<p><strong>首先我们要明确的是SQL语句关键字执行的阶段</strong></p>
+<ul>
+<li>
+<p><strong>FROM: FROM关键字表示SQL执行期确定数据源的阶段,即确定要进行操作的数据来自哪张表,也是最早执行的阶段</strong></p>
+</li>
+<li>
+<p><strong>JOIN/ON: JOIN和ON关键字也在确定数据源的阶段,但通常表示着连接外表的时候,ON关键字表示外表的连接条件,比如On Order.CustomerID = Customer.CustomerI</strong></p>
+</li>
+<li>
+<p><strong>Where: 在确定完数据源之后,要提取数据,可能会对数据进行过滤,这时候要用到Where关键字,数据库根据Where之后的条件对要取出的数据进行过滤,然后进行到下一阶段</strong></p>
+</li>
+<li>
+<p><strong>Group By/聚合函数(SUM/COUNT/AVG): 在过滤好数据之后,可能要对数据进行分组和聚合,这就需要Group By关键字和部分聚合函数发挥作用.SQL根据Group By后面指定的列进行分组,利用聚合函数将分组的结果进行聚合.这是这个阶段的事情.因此不能在Where的时候使用聚合的原因就是,聚合的阶段发生在Where过滤之后.</strong></p>
+</li>
+<li>
+<p><strong>Having: 在我们分组聚合后,要对数据进行进一步的过滤,这需要Having 关键字.Having 关键字通常对聚合后的结果进行过滤,而不是像Where在原始数据进行过滤.且Having关键字后面不能出现select中没有的列</strong></p>
+</li>
+<li>
+<p><strong>Select: 在所有的数据过滤-分组-再过滤完毕后.需要选择列输出的阶段,就用到Select 关键字了.虽然Select 关键字写在最前,但执行时一般是在最后的阶段执行.</strong></p>
+</li>
+<li>
+<p><strong>Distinct: 要对数据进行去重的时候使用</strong></p>
+</li>
+<li>
+<p><strong>Order By: 我们要求数据有顺序的输出时,要用到Order By,这基本是等前面所有阶段完成后才执行的</strong></p>
+</li>
+<li>
+<p><strong>LIMIT: 要限制展示的数据多少行的时候使用</strong></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 ShiDu
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
